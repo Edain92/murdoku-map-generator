@@ -45,7 +45,7 @@ The following features are planned and open for contribution:
 
 ## How to Use
 
-Open `murdoku.jsx` as an artifact in [Claude.ai](https://claude.ai) to run it directly in the browser. No build step required.
+Open `murdoku.jsx` as an artifact in [Claude.ai](https://claude.ai/public/artifacts/83285fc4-3e65-4e02-baca-5835edfcff90) to run it directly in the browser. No build step required.
 
 ---
 
