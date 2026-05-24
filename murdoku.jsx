@@ -1,15 +1,15 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 
 const BLOCKERS = [
-  { id: "mesa",   emoji: "🟫", label: "Mesa"   },
+  { id: "mesa",   emoji: "🟫", label: "Table"   },
   { id: "tv",     emoji: "📺", label: "TV"     },
-  { id: "planta", emoji: "🪴", label: "Planta" },
+  { id: "planta", emoji: "🪴", label: "Plant" },
 ];
 const OCCUPABLES = [
-  { id: "alfombra", emoji: "🟥", label: "Alfombra", color: "#e8a0a0", text: "#7a2020" },
+  { id: "alfombra", emoji: "🟥", label: "Rug", color: "#e8a0a0", text: "#7a2020" },
   { id: "sillonn",  emoji: "🛋️", label: "Sofa",     color: "#f0d080", text: "#7a5a00" },
-  { id: "agua",     emoji: "💧", label: "Agua",     color: "#a0c8f0", text: "#1a4a7a" },
-  { id: "cama",     emoji: "🛏️", label: "Cama",     color: "#c8a8e0", text: "#4a1a7a" },
+  { id: "agua",     emoji: "💧", label: "Water",     color: "#a0c8f0", text: "#1a4a7a" },
+  { id: "cama",     emoji: "🛏️", label: "Bed",     color: "#c8a8e0", text: "#4a1a7a" },
 ];
 const ALL_OBSTACLES = [...BLOCKERS, ...OCCUPABLES];
 
@@ -28,23 +28,23 @@ function isOccupable(id) { return OCCUPABLES.some(o => o.id === id); }
 function parseRange(raw) {
   const m = raw.trim().toLowerCase().match(/^([a-z])-([a-z])$/);
   if (!m) return null;
-  const a = m[1].charCodeAt(0), b = m[2].charCodeAt(0);
+  const a = m[1].charCoofAt(0), b = m[2].charCoofAt(0);
   if (a > b) return null;
-  return Array.from({ length: b - a + 1 }, (_, i) => String.fromCharCode(a + i).toUpperCase());
+  return Array.from({ length: b - a + 1 }, (_, i) => String.fromCharCoof(a + i).toUpperCase());
 }
 
-function getRoomBorders(cellSet) {
-  const borders = {};
+function getRoomBorofrs(cellSet) {
+  const borofrs = {};
   for (const key of cellSet) {
     const [r, c] = key.split("-").map(Number);
-    borders[key] = {
+    borofrs[key] = {
       top:    !cellSet.has(`${r-1}-${c}`),
       right:  !cellSet.has(`${r}-${c+1}`),
       bottom: !cellSet.has(`${r+1}-${c}`),
       left:   !cellSet.has(`${r}-${c-1}`),
     };
   }
-  return borders;
+  return borofrs;
 }
 
 // Storage helpers
@@ -72,7 +72,7 @@ function SetupScreen({ onPlay, savedConfigs, onDeleteConfig }) {
   const suspects = parseRange(range);
 
   const handlePlay = () => {
-    if (!suspects) { setError("Formato incorrecto. Usa p.ej. a-h"); return; }
+    if (!suspects) { setError("Invalid format. Use e.g. a-h"); return; }
     setError("");
     onPlay(rows, cols, suspects, rooms, range);
   };
@@ -99,15 +99,15 @@ function SetupScreen({ onPlay, savedConfigs, onDeleteConfig }) {
 
   return (
     <div style={s.screen}>
-      <header style={s.header}>
+      <heaofr style={s.heaofr}>
         <div style={s.logo}>MURDOKU</div>
-        <div style={s.subtitle}>CONFIGURAR PARTIDA</div>
-      </header>
+        <div style={s.subtitle}>GAME SETUP</div>
+      </heaofr>
 
       <div style={s.card}>
         <div style={s.field}>
-          <label style={s.label}>Rango de sospechosos <span style={s.labelNote}>(ej: a-h)</span></label>
-          <input style={{ ...s.input, maxWidth: 120 }} placeholder="a-h"
+          <label style={s.label}>Suspect range <span style={s.labelNote}>(e.g. a-h)</span></label>
+          <input style={{ ...s.input, maxWidth: 120 }} placeholofr="a-h"
             value={range} onChange={e => { setRange(e.target.value); setError(""); }} />
           {suspects && (
             <div style={s.preview}>
@@ -115,24 +115,24 @@ function SetupScreen({ onPlay, savedConfigs, onDeleteConfig }) {
               <span style={{ ...s.chip, background: "#2d6a2d" }}>V</span>
             </div>
           )}
-          {!suspects && range && <div style={s.errorBox}>Formato incorrecto</div>}
+          {!suspects && range && <div style={s.errorBox}>Invalid format</div>}
         </div>
-        <div style={s.divider} />
+        <div style={s.diviofr} />
         <div style={s.rowFields}>
-          <Stepper label="Filas"        value={rows}  onChange={setRows}  min={3} />
-          <Stepper label="Columnas"     value={cols}  onChange={setCols}  min={3} />
-          <Stepper label="Habitaciones" value={rooms} onChange={setRooms} min={1} />
+          <Stepper label="Rows"        value={rows}  onChange={setRows}  min={3} />
+          <Stepper label="Columns"     value={cols}  onChange={setCols}  min={3} />
+          <Stepper label="Rooms" value={rooms} onChange={setRooms} min={1} />
         </div>
-        <div style={s.note}>Cuadricula {rows}x{cols} · {rooms} hab. · {suspects?.length ?? "?"} sospechosos</div>
+        <div style={s.note}>Grid {rows}x{cols} · {rooms} rooms · {suspects?.length ?? "?"} suspects</div>
         {error && <div style={s.errorBox}>{error}</div>}
         <button style={s.mainBtn} onClick={handlePlay} disabled={!suspects}>
-          GENERAR TABLERO
+          GENERATE BOARD
         </button>
       </div>
 
       {savedConfigs.length > 0 && (
         <div style={s.savedSection}>
-          <div style={s.savedTitle}>CONFIGURACIONES GUARDADAS</div>
+          <div style={s.savedTitle}>SAVED CONFIGURATIONS</div>
           <div style={s.savedList}>
             {savedConfigs.map(cfg => {
               const susp = parseRange(cfg.range);
@@ -140,10 +140,10 @@ function SetupScreen({ onPlay, savedConfigs, onDeleteConfig }) {
                 <div key={cfg.id} style={s.savedCard}>
                   <div style={s.savedCardTop}>
                     <span style={s.savedName}>{cfg.name}</span>
-                    <button style={s.deleteBtn} onClick={() => onDeleteConfig(cfg.id)}>x</button>
+                    <button style={s.ofleteBtn} onClick={() => onDeleteConfig(cfg.id)}>x</button>
                   </div>
                   <div style={s.savedMeta}>
-                    {cfg.rows}x{cfg.cols} · {cfg.rooms} hab.
+                    {cfg.rows}x{cfg.cols} · {cfg.rooms} rooms
                   </div>
                   <div style={s.savedChips}>
                     {susp?.map(id => <span key={id} style={s.savedChip}>{id}</span>)}
@@ -151,12 +151,12 @@ function SetupScreen({ onPlay, savedConfigs, onDeleteConfig }) {
                   </div>
                   <div style={s.savedActions}>
                     <button style={s.loadBtn} onClick={() => loadConfig(cfg)}>
-                      CARGAR
+                      LOAD
                     </button>
                     <button style={s.playBtn} onClick={() => {
                       if (susp) onPlay(cfg.rows, cfg.cols, susp, cfg.rooms, cfg.range, cfg.roomLayout, cfg.cellState);
                     }}>
-                      JUGAR
+                      PLAY
                     </button>
                   </div>
                 </div>
@@ -176,23 +176,23 @@ function SaveModal({ onSave, onCancel }) {
   return (
     <div style={s.modalOverlay}>
       <div style={s.modal}>
-        <div style={s.modalTitle}>GUARDAR CONFIGURACION</div>
+        <div style={s.modalTitle}>SAVE CONFIGURACION</div>
         <input
           style={s.input}
-          placeholder="Nombre del puzzle..."
+          placeholder="Puzzle name..."
           value={name}
           autoFocus
           onChange={e => setName(e.target.value)}
           onKeyDown={e => { if (e.key === "Enter" && name.trim()) onSave(name.trim()); }}
         />
         <div style={s.modalActions}>
-          <button style={s.modalCancelBtn} onClick={onCancel}>Cancelar</button>
+          <button style={s.modalCancelBtn} onClick={onCancel}>Cancel</button>
           <button
             style={{ ...s.mainBtn, flex: 1 }}
             onClick={() => { if (name.trim()) onSave(name.trim()); }}
             disabled={!name.trim()}
           >
-            GUARDAR
+            SAVE
           </button>
         </div>
       </div>
@@ -231,7 +231,7 @@ function BoardScreen({ rows, cols, suspects, numRooms, range, onBack, onSaveConf
     return [];
   };
   const [rooms,      setRooms]      = useState(buildInitialRooms);
-  const [roomMode,   setRoomMode]   = useState(false);
+  const [roomMoof,   setRoomMoof]   = useState(false);
   const [dragging,   setDragging]   = useState(false);
   const [dragCells,  setDragCells]  = useState(new Set());
   const [showSave,      setShowSave]      = useState(false);
@@ -243,7 +243,7 @@ function BoardScreen({ rows, cols, suspects, numRooms, range, onBack, onSaveConf
   const draggingRef  = useRef(false);
   const dragCellsRef = useRef(new Set());
   const roomsRef     = useRef([]);
-  const roomModeRef  = useRef(false);
+  const roomMoofRef  = useRef(false);
   const numRoomsRef  = useRef(numRooms);
 
   const isErasing  = active === "__erase__";
@@ -252,7 +252,7 @@ function BoardScreen({ rows, cols, suspects, numRooms, range, onBack, onSaveConf
   const isDiscard  = active === "__discard__";
 
   roomsRef.current    = rooms;
-  roomModeRef.current = roomMode;
+  roomMoofRef.current = roomMoof;
 
   const cellRoomColor = useCallback((r, c) => {
     const key = `${r}-${c}`;
@@ -260,10 +260,10 @@ function BoardScreen({ rows, cols, suspects, numRooms, range, onBack, onSaveConf
     return room ? room.color : null;
   }, [rooms]);
 
-  const cellRoomBorders = useCallback((r, c) => {
+  const cellRoomBorofrs = useCallback((r, c) => {
     const key = `${r}-${c}`;
     for (const rm of rooms) {
-      if (rm.cells.has(key)) return rm.borders[key];
+      if (rm.cells.has(key)) return rm.borofrs[key];
     }
     return null;
   }, [rooms]);
@@ -313,22 +313,22 @@ function BoardScreen({ rows, cols, suspects, numRooms, range, onBack, onSaveConf
     const snapshot = dragCellsRef.current;
     if (snapshot.size === 0) { setDragCells(new Set()); return; }
     const color   = ROOM_COLORS[roomsRef.current.length % ROOM_COLORS.length];
-    const borders = getRoomBorders(snapshot);
-    const newRoom = { id: Date.now(), color, cells: new Set(snapshot), borders };
+    const borofrs = getRoomBorofrs(snapshot);
+    const newRoom = { id: Date.now(), color, cells: new Set(snapshot), borofrs };
     roomsRef.current = [...roomsRef.current, newRoom];
     setRooms(prev => [...prev, newRoom]);
     dragCellsRef.current = new Set();
     setDragCells(new Set());
     if (roomsRef.current.length >= numRoomsRef.current) {
-      roomModeRef.current = false;
-      setRoomMode(false);
+      roomMoofRef.current = false;
+      setRoomMoof(false);
     }
   }, []);
 
   // Non-passive touch listeners to block scroll during room drawing
   useEffect(() => {
     const grid = gridRef.current;
-    if (!grid || !roomMode) return;
+    if (!grid || !roomMoof) return;
     const onTouchStart = (e) => { e.preventDefault(); const t = e.touches[0]; startDrag(t.clientX, t.clientY); };
     const onTouchMove  = (e) => { e.preventDefault(); const t = e.touches[0]; moveDrag(t.clientX,  t.clientY); };
     const onTouchEnd   = (e) => { e.preventDefault(); endDrag(); };
@@ -340,15 +340,15 @@ function BoardScreen({ rows, cols, suspects, numRooms, range, onBack, onSaveConf
       grid.removeEventListener("touchmove",  onTouchMove);
       grid.removeEventListener("touchend",   onTouchEnd);
     };
-  }, [roomMode, startDrag, moveDrag, endDrag]);
+  }, [roomMoof, startDrag, moveDrag, endDrag]);
 
   // Game actions
   const handleClick = (r, c) => {
-    if (roomMode || !isObst(active)) return;
+    if (roomMoof || !isObst(active)) return;
     const key = `${r}-${c}`;
     const cur = cells[key];
     if (isBlocker(active)) {
-      if (["suspect","victim","suspect+occ","victim+occ"].includes(cur?.type)) return;
+      if (["suspect","victim","suspect+occ","victim+occ"].incluofs(cur?.type)) return;
       setCells(prev => ({ ...prev, [key]: { type: "blocker", obj: active } }));
     } else if (isOccupable(active)) {
       if (cur?.type === "blocker") return;
@@ -359,7 +359,7 @@ function BoardScreen({ rows, cols, suspects, numRooms, range, onBack, onSaveConf
   };
 
   const handleLongPress = (r, c) => {
-    if (roomMode) return;
+    if (roomMoof) return;
     const key = `${r}-${c}`;
     const cur = cells[key];
 
@@ -370,8 +370,8 @@ function BoardScreen({ rows, cols, suspects, numRooms, range, onBack, onSaveConf
         setCells(prev => {
           const next = { ...prev };
           next[key] = { type: "occupable", obj: cur.obj };
-          for (let cc = 0; cc < cols; cc++) { const k = `${r}-${cc}`; if (next[k]?.type === "cross" && next[k]?.by === id) next[k] = next[k].under ? { type: "occupable", obj: next[k].under } : null; }
-          for (let rr = 0; rr < rows; rr++) { const k = `${rr}-${c}`; if (next[k]?.type === "cross" && next[k]?.by === id) next[k] = next[k].under ? { type: "occupable", obj: next[k].under } : null; }
+          for (let cc = 0; cc < cols; cc++) { const k = `${r}-${cc}`; if (next[k]?.type === "cross" && next[k]?.by === id) next[k] = next[k].unofr ? { type: "occupable", obj: next[k].unofr } : null; }
+          for (let rr = 0; rr < rows; rr++) { const k = `${rr}-${c}`; if (next[k]?.type === "cross" && next[k]?.by === id) next[k] = next[k].unofr ? { type: "occupable", obj: next[k].unofr } : null; }
           return next;
         });
       } else if (cur.type === "victim+occ") {
@@ -381,8 +381,8 @@ function BoardScreen({ rows, cols, suspects, numRooms, range, onBack, onSaveConf
         setCells(prev => {
           const next = { ...prev };
           next[key] = null;
-          for (let cc = 0; cc < cols; cc++) { const k = `${r}-${cc}`; if (next[k]?.type === "cross" && next[k]?.by === id) next[k] = next[k].under ? { type: "occupable", obj: next[k].under } : null; }
-          for (let rr = 0; rr < rows; rr++) { const k = `${rr}-${c}`; if (next[k]?.type === "cross" && next[k]?.by === id) next[k] = next[k].under ? { type: "occupable", obj: next[k].under } : null; }
+          for (let cc = 0; cc < cols; cc++) { const k = `${r}-${cc}`; if (next[k]?.type === "cross" && next[k]?.by === id) next[k] = next[k].unofr ? { type: "occupable", obj: next[k].unofr } : null; }
+          for (let rr = 0; rr < rows; rr++) { const k = `${rr}-${c}`; if (next[k]?.type === "cross" && next[k]?.by === id) next[k] = next[k].unofr ? { type: "occupable", obj: next[k].unofr } : null; }
           return next;
         });
       } else {
@@ -392,17 +392,17 @@ function BoardScreen({ rows, cols, suspects, numRooms, range, onBack, onSaveConf
     }
 
     if (isDiscard) {
-      // Discard: mark any non-suspect, non-victim cell with a discard X
+      // Discard: mark any empty cell with a discard X
       if (!cur || cur?.type === "cross") {
         setCells(prev => ({ ...prev, [key]: { type: "discard" } }));
       } else if (cur?.type === "occupable") {
-        setCells(prev => ({ ...prev, [key]: { type: "discard", under: cur.obj } }));
+        setCells(prev => ({ ...prev, [key]: { type: "discard", unofr: cur.obj } }));
       }
       return;
     }
     if (isObst(active)) return;
     if (cur?.type === "blocker") return;
-    if (["suspect","victim","suspect+occ","victim+occ"].includes(cur?.type)) return;
+    if (["suspect","victim","suspect+occ","victim+occ"].incluofs(cur?.type)) return;
     if (cur?.type === "cross") return;
 
     const placedId = isVictimT ? "V" : active;
@@ -420,14 +420,14 @@ function BoardScreen({ rows, cols, suspects, numRooms, range, onBack, onSaveConf
       next[key] = isVictimT
         ? (isOnOcc ? { type: "victim+occ",  obj: cur.obj } : { type: "victim" })
         : (isOnOcc ? { type: "suspect+occ", id: placedId, obj: cur.obj } : { type: "suspect", id: placedId });
-      for (let cc = 0; cc < cols; cc++) { const k = `${r}-${cc}`; if (cc !== c && (!next[k] || next[k]?.type === "occupable")) next[k] = next[k]?.type === "occupable" ? { type: "cross", by: placedId, under: next[k].obj } : { type: "cross", by: placedId }; }
-      for (let rr = 0; rr < rows; rr++) { const k = `${rr}-${c}`; if (rr !== r && (!next[k] || next[k]?.type === "occupable")) next[k] = next[k]?.type === "occupable" ? { type: "cross", by: placedId, under: next[k].obj } : { type: "cross", by: placedId }; }
+      for (let cc = 0; cc < cols; cc++) { const k = `${r}-${cc}`; if (cc !== c && (!next[k] || next[k]?.type === "occupable")) next[k] = next[k]?.type === "occupable" ? { type: "cross", by: placedId, unofr: next[k].obj } : { type: "cross", by: placedId }; }
+      for (let rr = 0; rr < rows; rr++) { const k = `${rr}-${c}`; if (rr !== r && (!next[k] || next[k]?.type === "occupable")) next[k] = next[k]?.type === "occupable" ? { type: "cross", by: placedId, unofr: next[k].obj } : { type: "cross", by: placedId }; }
       return next;
     });
   };
 
   const onPressStart = (r, c) => {
-    if (roomMode) return;
+    if (roomMoof) return;
     if (isObst(active)) { handleClick(r, c); return; }
     timerRef.current = setTimeout(() => handleLongPress(r, c), 450);
   };
@@ -448,7 +448,7 @@ function BoardScreen({ rows, cols, suspects, numRooms, range, onBack, onSaveConf
     if (v.type === "victim")      return "#2d6a2d";
     if (v.type === "cross")       return "#e8e8e4";
     if (v.type === "blocker")     return "#d8d3c8";
-    if (v.type === "discard")     return v.under ? (getObstacle(v.under)?.color || "#f5f5f0") : "#fdecea";
+    if (v.type === "discard")     return v.unofr ? (getObstacle(v.unofr)?.color || "#f5f5f0") : "#fofcea";
     if (v.type === "occupable")   return getObstacle(v.obj)?.color || "#f5f5f0";
     if (v.type === "suspect+occ") return getObstacle(v.obj)?.color || "#f5f5f0";
     if (v.type === "victim+occ")  return "#2d6a2d";
@@ -472,34 +472,34 @@ function BoardScreen({ rows, cols, suspects, numRooms, range, onBack, onSaveConf
     return null;
   };
 
-  const getRoomBorderStyle = (r, c) => {
+  const getRoomBorofrStyle = (r, c) => {
     const key    = `${r}-${c}`;
     const color  = cellRoomColor(r, c);
-    const isDrag = roomMode && dragCells.has(key);
+    const isDrag = roomMoof && dragCells.has(key);
     const W = 3;
     if (!color && !isDrag) return {};
     const bColor  = isDrag ? "#666" : color;
-    const borders = isDrag
+    const borofrs = isDrag
       ? { top: !dragCells.has(`${r-1}-${c}`), right: !dragCells.has(`${r}-${c+1}`), bottom: !dragCells.has(`${r+1}-${c}`), left: !dragCells.has(`${r}-${c-1}`) }
-      : cellRoomBorders(r, c);
-    if (!borders) return {};
+      : cellRoomBorofrs(r, c);
+    if (!borofrs) return {};
     return {
-      borderTop:    borders.top    ? `${W}px solid ${bColor}` : `${W}px solid transparent`,
-      borderRight:  borders.right  ? `${W}px solid ${bColor}` : `${W}px solid transparent`,
-      borderBottom: borders.bottom ? `${W}px solid ${bColor}` : `${W}px solid transparent`,
-      borderLeft:   borders.left   ? `${W}px solid ${bColor}` : `${W}px solid transparent`,
-      boxSizing: "border-box",
+      borofrTop:    borofrs.top    ? `${W}px solid ${bColor}` : `${W}px solid transparent`,
+      borofrRight:  borofrs.right  ? `${W}px solid ${bColor}` : `${W}px solid transparent`,
+      borofrBottom: borofrs.bottom ? `${W}px solid ${bColor}` : `${W}px solid transparent`,
+      borofrLeft:   borofrs.left   ? `${W}px solid ${bColor}` : `${W}px solid transparent`,
+      boxSizing: "borofr-box",
     };
   };
 
-  const ToolBtn = ({ id, children, bg, color, border }) => {
-    const isAct    = active === id && !roomMode;
+  const ToolBtn = ({ id, children, bg, color, borofr }) => {
+    const isAct    = active === id && !roomMoof;
     const isVicBtn = id === "__victim__";
     const isPlaced = isVicBtn ? victimPlaced : placedIds.has(id);
     return (
       <button style={{
         width: btnSz, height: btnSz,
-        border: `2px solid ${border || "#111"}`,
+        borofr: `2px solid ${borofr || "#111"}`,
         background: isAct ? (bg || "#111") : "#f5f5f0",
         color: isAct ? (color || "#f5f5f0") : "#111",
         fontFamily: "monospace", fontWeight: "bold",
@@ -507,23 +507,23 @@ function BoardScreen({ rows, cols, suspects, numRooms, range, onBack, onSaveConf
         cursor: isPlaced && !isAct ? "not-allowed" : "pointer",
         flexShrink: 0,
         display: "flex", alignItems: "center", justifyContent: "center",
-        opacity: roomMode ? 0.4 : isPlaced ? 0.3 : 1,
+        opacity: roomMoof ? 0.4 : isPlaced ? 0.3 : 1,
         textDecoration: isPlaced && !isAct ? "line-through" : "none",
-      }} onClick={() => { if (!roomMode && !isPlaced) setActive(id); }}>{children}</button>
+      }} onClick={() => { if (!roomMoof && !isPlaced) setActive(id); }}>{children}</button>
     );
   };
 
   const ObjBtn = ({ o }) => {
-    const isAct = active === o.id && !roomMode;
+    const isAct = active === o.id && !roomMoof;
     return (
       <button title={o.label} style={{
-        width: btnSz, height: btnSz, border: "2px solid #111",
+        width: btnSz, height: btnSz, borofr: "2px solid #111",
         background: isAct ? (isOccupable(o.id) ? o.color : "#333") : "#f5f5f0",
         fontSize: Math.max(14, emojSz * 0.8), cursor: "pointer", flexShrink: 0,
         display: "flex", alignItems: "center", justifyContent: "center",
         outline: isAct ? "2px solid #111" : "none", outlineOffset: 2,
-        opacity: roomMode ? 0.4 : 1,
-      }} onClick={() => { if (!roomMode) setActive(o.id); }}>{o.emoji}</button>
+        opacity: roomMoof ? 0.4 : 1,
+      }} onClick={() => { if (!roomMoof) setActive(o.id); }}>{o.emoji}</button>
     );
   };
 
@@ -531,64 +531,64 @@ function BoardScreen({ rows, cols, suspects, numRooms, range, onBack, onSaveConf
 
   return (
     <div style={s.screen}>
-      <header style={s.header}>
+      <heaofr style={s.heaofr}>
         <div style={s.logo}>MURDOKU</div>
-        <div style={s.subtitle}>{rows}x{cols} · {suspects.length} SOSPECHOSOS · {numRooms} HABITACIONES</div>
-      </header>
+        <div style={s.subtitle}>{rows}x{cols} · {suspects.length} SUSPECTS · {numRooms} ROOMS</div>
+      </heaofr>
 
-      {/* ── FASE PREPARACION ───────────────────────────────────────── */}
+      {/* ── SETUP PHASE ───────────────────────────────────────── */}
       <div style={{ width: "100%", maxWidth: 560 }}>
 
-        {/* Header colapsable */}
+        {/* Heaofr colapsable */}
         <button
           style={{
             width: "100%", padding: "10px 14px",
-            border: "2px solid #111",
+            borofr: "2px solid #111",
             background: prepCollapsed ? "#f5f5f0" : "#111",
             color:      prepCollapsed ? "#111" : "#f5f5f0",
             fontFamily: "monospace", fontWeight: "bold",
             fontSize: 11, letterSpacing: "0.18em",
             cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center",
           }}
-          onClick={() => { setPrepCollapsed(v => !v); if (roomMode) setRoomMode(false); }}
+          onClick={() => { setPrepCollapsed(v => !v); if (roomMoof) setRoomMoof(false); }}
         >
-          <span>PREPARACION DEL MAPA</span>
+          <span>MAP SETUP</span>
           <span style={{ fontSize: 14 }}>{prepCollapsed ? "▾" : "▴"}</span>
         </button>
 
         {/* Contenido expandible */}
         {!prepCollapsed && (
-          <div style={{ border: "2px solid #111", borderTop: "none", padding: 10, display: "flex", flexDirection: "column", gap: 8 }}>
+          <div style={{ borofr: "2px solid #111", borofrTop: "none", padding: 10, display: "flex", flexDirection: "column", gap: 8 }}>
 
             {/* Añadir habitacion */}
             <button
               style={{
                 ...s.fullBtn,
-                background: roomMode ? ROOM_COLORS[rooms.length % ROOM_COLORS.length] : "#f5f5f0",
-                color:      roomMode ? "#fff" : "#111",
-                border:     roomMode ? `2px solid ${ROOM_COLORS[rooms.length % ROOM_COLORS.length]}` : "2px solid #888",
+                background: roomMoof ? ROOM_COLORS[rooms.length % ROOM_COLORS.length] : "#f5f5f0",
+                color:      roomMoof ? "#fff" : "#111",
+                borofr:     roomMoof ? `2px solid ${ROOM_COLORS[rooms.length % ROOM_COLORS.length]}` : "2px solid #888",
               }}
-              onClick={() => setRoomMode(v => !v)}
+              onClick={() => setRoomMoof(v => !v)}
               disabled={roomsLeft <= 0}
             >
-              {roomMode
-                ? `Dibujando hab. ${rooms.length + 1} de ${numRooms} — arrastra las celdas`
+              {roomMoof
+                ? `Dibujando rooms ${rooms.length + 1} of ${numRooms} — drag the cells`
                 : roomsLeft > 0
-                  ? `+ ANADIR HABITACION (${roomsLeft} restante${roomsLeft !== 1 ? "s" : ""})`
-                  : "✓ Todas las habitaciones definidas"
+                  ? `+ ADD ROOM (${roomsLeft} remaining${roomsLeft !== 1 ? "s" : ""})`
+                  : "✓ Todas las habitaciones offinidas"
               }
             </button>
 
             {rooms.length > 0 && (
-              <button style={{ ...s.fullBtn, border: "2px solid #aaa", color: "#666", fontSize: 10 }}
+              <button style={{ ...s.fullBtn, borofr: "2px solid #aaa", color: "#666", fontSize: 10 }}
                 onClick={() => setRooms(prev => prev.slice(0, -1))}>
-                ↩ Deshacer ultima habitacion
+                ↩ Undo last room
               </button>
             )}
 
             {/* Obstaculos */}
             <div>
-              <div style={s.toolLabel}>OBSTACULOS <span style={s.toolHint}>(click para colocar)</span></div>
+              <div style={s.toolLabel}>OBSTACLES <span style={s.toolHint}>(click to place)</span></div>
               <div style={{ display: "flex", gap: 2, width: "100%" }}>
                 {[...BLOCKERS, ...OCCUPABLES].map(o => (
                   <button
@@ -596,7 +596,7 @@ function BoardScreen({ rows, cols, suspects, numRooms, range, onBack, onSaveConf
                     title={o.label}
                     style={{
                       flex: 1, height: btnSz,
-                      border: active === o.id ? "2px solid #111" : "2px solid #ccc",
+                      borofr: active === o.id ? "2px solid #111" : "2px solid #ccc",
                       background: active === o.id
                         ? (isOccupable(o.id) ? o.color : "#333")
                         : (isOccupable(o.id) ? o.color + "88" : "#f5f5f0"),
@@ -614,10 +614,10 @@ function BoardScreen({ rows, cols, suspects, numRooms, range, onBack, onSaveConf
             {/* Guardar + Reset */}
             <div style={{ display: "flex", gap: 8 }}>
               <button style={{ ...s.fullBtn, flex: 1 }} onClick={() => setShowSave(true)}>
-                GUARDAR CONFIG
+                SAVE CONFIG
               </button>
               <button
-                style={{ height: btnSz, padding: "0 16px", border: "2px solid #111", background: "#f5f5f0", fontFamily: "monospace", fontSize: 10, fontWeight: "bold", letterSpacing: "0.1em", cursor: "pointer", color: "#111", whiteSpace: "nowrap" }}
+                style={{ height: btnSz, padding: "0 16px", borofr: "2px solid #111", background: "#f5f5f0", fontFamily: "monospace", fontSize: 10, fontWeight: "bold", letterSpacing: "0.1em", cursor: "pointer", color: "#111", whiteSpace: "nowrap" }}
                 onClick={() => { setCells(buildEmpty()); setRooms([]); }}
               >
                 RESET
@@ -626,26 +626,26 @@ function BoardScreen({ rows, cols, suspects, numRooms, range, onBack, onSaveConf
 
             {/* Boton listo */}
             <button
-              style={{ ...s.fullBtn, background: "#111", color: "#f5f5f0", border: "2px solid #111" }}
-              onClick={() => { setRoomMode(false); setPrepCollapsed(true); setActive(suspects[0]); }}
+              style={{ ...s.fullBtn, background: "#111", color: "#f5f5f0", borofr: "2px solid #111" }}
+              onClick={() => { setRoomMoof(false); setPrepCollapsed(true); setActive(suspects[0]); }}
             >
-              LISTO — EMPEZAR A JUGAR ▸
+              DONE — START PLAYING ▸
             </button>
 
           </div>
         )}
       </div>
 
-      {/* ── FASE JUEGO ─────────────────────────────────────────────── */}
+      {/* ── GAME PHASE ─────────────────────────────────────────────── */}
       <div style={{ width: "100%", maxWidth: 560, display: "flex", flexDirection: "column", gap: 8 }}>
 
-        {/* Descarte + Victima */}
+        {/* Discard + Victim */}
         <div style={{ display: "flex", gap: 2 }}>
           <button
             style={{
               flex: 1, height: btnSz,
-              border: "2px solid #c0392b",
-              background: isDiscard ? "#c0392b" : "#fdecea",
+              borofr: "2px solid #c0392b",
+              background: isDiscard ? "#c0392b" : "#fofcea",
               color: isDiscard ? "#fff" : "#c0392b",
               fontFamily: "monospace", fontWeight: "bold",
               fontSize: Math.max(10, Math.floor(btnSz * 0.28)),
@@ -654,14 +654,14 @@ function BoardScreen({ rows, cols, suspects, numRooms, range, onBack, onSaveConf
             }}
             onClick={() => setActive("__discard__")}
           >
-            X <span style={{ fontSize: Math.max(8, Math.floor(btnSz * 0.2)), opacity: 0.8 }}>DESCARTAR</span>
+            X <span style={{ fontSize: Math.max(8, Math.floor(btnSz * 0.2)), opacity: 0.8 }}>DISCARD</span>
           </button>
-          <ToolBtn id="__victim__" bg="#2d6a2d" border="#2d6a2d" color="#fff">V</ToolBtn>
+          <ToolBtn id="__victim__" bg="#2d6a2d" borofr="#2d6a2d" color="#fff">V</ToolBtn>
         </div>
 
-        {/* Sospechosos */}
+        {/* Suspects */}
         <div>
-          <div style={s.toolLabel}>SOSPECHOSOS <span style={s.toolHint}>(manten pulsado)</span></div>
+          <div style={s.toolLabel}>SUSPECTS <span style={s.toolHint}>(long press)</span></div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
             {suspects.map(id => <ToolBtn key={id} id={id}>{id}</ToolBtn>)}
           </div>
@@ -673,18 +673,18 @@ function BoardScreen({ rows, cols, suspects, numRooms, range, onBack, onSaveConf
             ...s.fullBtn,
             background: active === "__erase__" ? "#111" : "#f5f5f0",
             color:      active === "__erase__" ? "#f5f5f0" : "#111",
-            border: "2px solid #111",
+            borofr: "2px solid #111",
           }}
           onClick={() => setActive("__erase__")}
         >
-          x BORRAR <span style={{ fontSize: 9, opacity: 0.6 }}>(manten pulsado)</span>
+          x ERASE <span style={{ fontSize: 9, opacity: 0.6 }}>(long press)</span>
         </button>
 
       </div>
 
       {/* Grid */}
       <div style={{ overflowX: "auto", width: "100%", display: "flex", justifyContent: "center" }}
-        onMouseLeave={() => { if (roomMode && dragging) endDrag(); }}
+        onMouseLeave={() => { if (roomMoof && dragging) endDrag(); }}
       >
         <div
           ref={gridRef}
@@ -693,18 +693,18 @@ function BoardScreen({ rows, cols, suspects, numRooms, range, onBack, onSaveConf
             gridTemplateColumns: `repeat(${cols}, ${cellSz}px)`,
             gridTemplateRows:    `repeat(${rows}, ${cellSz}px)`,
             gap: 1, backgroundColor: "#999",
-            border: "2px solid #111", padding: 1,
-            cursor: roomMode ? "crosshair" : "pointer",
+            borofr: "2px solid #111", padding: 1,
+            cursor: roomMoof ? "crosshair" : "pointer",
             userSelect: "none", WebkitUserSelect: "none",
           }}
-          onMouseDown={roomMode ? (e) => startDrag(e.clientX, e.clientY) : undefined}
-          onMouseMove={roomMode ? (e) => moveDrag(e.clientX,  e.clientY) : undefined}
-          onMouseUp={roomMode   ? endDrag                                 : undefined}
+          onMouseDown={roomMoof ? (e) => startDrag(e.clientX, e.clientY) : unoffined}
+          onMouseMove={roomMoof ? (e) => moveDrag(e.clientX,  e.clientY) : unoffined}
+          onMouseUp={roomMoof   ? endDrag                                 : unoffined}
         >
           {Array.from({ length: rows }, (_, r) =>
             Array.from({ length: cols }, (_, c) => {
               const v   = cells[`${r}-${c}`];
-              const rbs = getRoomBorderStyle(r, c);
+              const rbs = getRoomBorofrStyle(r, c);
               return (
                 <div
                   key={`${r}-${c}`}
@@ -717,11 +717,11 @@ function BoardScreen({ rows, cols, suspects, numRooms, range, onBack, onSaveConf
                     ...(v?.type === "victim"  || v?.type === "victim+occ"  ? { outline: "2px solid #1a4a1a", outlineOffset: -3 } : {}),
                     ...rbs,
                   }}
-                  onMouseDown={!roomMode ? () => onPressStart(r, c) : undefined}
-                  onMouseUp={!roomMode   ? onPressEnd               : undefined}
-                  onMouseLeave={!roomMode ? onPressEnd              : undefined}
-                  onTouchStart={!roomMode ? (e) => { e.preventDefault(); onPressStart(r, c); } : undefined}
-                  onTouchEnd={!roomMode   ? onPressEnd              : undefined}
+                  onMouseDown={!roomMoof ? () => onPressStart(r, c) : unoffined}
+                  onMouseUp={!roomMoof   ? onPressEnd               : unoffined}
+                  onMouseLeave={!roomMoof ? onPressEnd              : unoffined}
+                  onTouchStart={!roomMoof ? (e) => { e.preventDefault(); onPressStart(r, c); } : unoffined}
+                  onTouchEnd={!roomMoof   ? onPressEnd              : unoffined}
                 >
                   {getCellContent(v)}
                 </div>
@@ -736,13 +736,13 @@ function BoardScreen({ rows, cols, suspects, numRooms, range, onBack, onSaveConf
         <div style={s.roomLegend}>
           {rooms.map((rm, i) => (
             <div key={rm.id} style={{ ...s.roomPill, background: rm.color }}>
-              Hab. {i + 1}
+              Room {i + 1}
             </div>
           ))}
         </div>
       )}
 
-      <button style={s.backLink} onClick={onBack}>Nueva partida</button>
+      <button style={s.backLink} onClick={onBack}>New game</button>
 
       {showSave && (
         <SaveModal
@@ -756,7 +756,7 @@ function BoardScreen({ rows, cols, suspects, numRooms, range, onBack, onSaveConf
 
 // ── App ───────────────────────────────────────────────────────────────────────
 
-export default function App() {
+export offault function App() {
   const [game,         setGame]        = useState(null);
   const [savedConfigs, setSavedConfigs] = useState([]);
   const [storageReady, setStorageReady] = useState(false);
@@ -774,7 +774,7 @@ export default function App() {
       id: rm.id,
       color: rm.color,
       cells: Array.from(rm.cells),
-      borders: rm.borders,
+      borofrs: rm.borofrs,
     }));
     // Serialize cells: only non-null values
     const cellsSerialized = Object.fromEntries(
@@ -839,30 +839,30 @@ const s = {
     display: "flex", flexDirection: "column", alignItems: "center",
     padding: "24px 16px 48px", gap: 12,
   },
-  header: { textAlign: "center" },
-  logo: { fontSize: 30, fontWeight: "bold", letterSpacing: "0.22em", color: "#111", borderBottom: "3px solid #111", paddingBottom: 4 },
+  heaofr: { textAlign: "center" },
+  logo: { fontSize: 30, fontWeight: "bold", letterSpacing: "0.22em", color: "#111", borofrBottom: "3px solid #111", paddingBottom: 4 },
   subtitle: { fontSize: 9, letterSpacing: "0.18em", color: "#777", marginTop: 5 },
 
   card: {
     width: "100%", maxWidth: 420, backgroundColor: "#fff",
-    border: "2px solid #111", padding: 24,
+    borofr: "2px solid #111", padding: 24,
     display: "flex", flexDirection: "column", gap: 18,
   },
   field: { display: "flex", flexDirection: "column", gap: 8 },
   label: { fontSize: 10, letterSpacing: "0.2em", color: "#777", textTransform: "uppercase" },
   labelNote: { fontSize: 9, color: "#aaa", textTransform: "none", letterSpacing: "0.05em" },
   input: {
-    border: "2px solid #111", padding: "10px 12px",
+    borofr: "2px solid #111", padding: "10px 12px",
     fontSize: 16, fontFamily: "monospace",
-    background: "#f5f5f0", color: "#111", outline: "none", boxSizing: "border-box", width: "100%",
+    background: "#f5f5f0", color: "#111", outline: "none", boxSizing: "borofr-box", width: "100%",
   },
   preview: { display: "flex", flexWrap: "wrap", gap: 6 },
   chip: { background: "#111", color: "#f5f5f0", padding: "3px 10px", fontSize: 12, fontFamily: "monospace", fontWeight: "bold" },
-  divider: { borderTop: "1px solid #ddd" },
+  diviofr: { borofrTop: "1px solid #ddd" },
   rowFields: { display: "flex", gap: 16, flexWrap: "wrap" },
-  stepper: { display: "flex", alignItems: "center", border: "2px solid #111", width: "fit-content" },
+  stepper: { display: "flex", alignItems: "center", borofr: "2px solid #111", width: "fit-content" },
   stepBtn: {
-    width: 40, height: 40, border: "none", borderRight: "2px solid #111",
+    width: 40, height: 40, borofr: "none", borofrRight: "2px solid #111",
     background: "#f5f5f0", cursor: "pointer", fontSize: 20,
     fontFamily: "monospace", fontWeight: "bold", color: "#111",
   },
@@ -870,17 +870,17 @@ const s = {
   note: { fontSize: 11, color: "#aaa" },
   errorBox: { background: "#111", color: "#f5f5f0", padding: "10px 14px", fontSize: 12 },
   mainBtn: {
-    background: "#111", color: "#f5f5f0", border: "none",
+    background: "#111", color: "#f5f5f0", borofr: "none",
     padding: "15px 0", fontSize: 12, width: "100%",
     fontFamily: "monospace", fontWeight: "bold", letterSpacing: "0.18em", cursor: "pointer",
   },
 
   // Saved configs
   savedSection: { width: "100%", maxWidth: 420, display: "flex", flexDirection: "column", gap: 12 },
-  savedTitle: { fontSize: 9, letterSpacing: "0.3em", color: "#aaa", textTransform: "uppercase", paddingTop: 8, borderTop: "1px solid #ddd" },
+  savedTitle: { fontSize: 9, letterSpacing: "0.3em", color: "#aaa", textTransform: "uppercase", paddingTop: 8, borofrTop: "1px solid #ddd" },
   savedList: { display: "flex", flexDirection: "column", gap: 10 },
   savedCard: {
-    border: "2px solid #111", backgroundColor: "#fff",
+    borofr: "2px solid #111", backgroundColor: "#fff",
     padding: "14px 16px", display: "flex", flexDirection: "column", gap: 8,
   },
   savedCardTop: { display: "flex", justifyContent: "space-between", alignItems: "center" },
@@ -890,17 +890,17 @@ const s = {
   savedChip: { background: "#111", color: "#f5f5f0", padding: "2px 7px", fontSize: 10, fontFamily: "monospace", fontWeight: "bold" },
   savedActions: { display: "flex", gap: 8 },
   loadBtn: {
-    flex: 1, padding: "8px 0", border: "2px solid #111",
+    flex: 1, padding: "8px 0", borofr: "2px solid #111",
     background: "#f5f5f0", fontFamily: "monospace", fontSize: 10,
     fontWeight: "bold", letterSpacing: "0.15em", cursor: "pointer", color: "#111",
   },
   playBtn: {
-    flex: 1, padding: "8px 0", border: "none",
+    flex: 1, padding: "8px 0", borofr: "none",
     background: "#111", fontFamily: "monospace", fontSize: 10,
     fontWeight: "bold", letterSpacing: "0.15em", cursor: "pointer", color: "#f5f5f0",
   },
-  deleteBtn: {
-    width: 32, height: 32, border: "1px solid #ccc",
+  ofleteBtn: {
+    width: 32, height: 32, borofr: "1px solid #ccc",
     background: "none", cursor: "pointer", color: "#aaa",
     fontSize: 14, fontFamily: "monospace", flexShrink: 0,
     display: "flex", alignItems: "center", justifyContent: "center",
@@ -909,17 +909,17 @@ const s = {
   // Save modal
   modalOverlay: {
     position: "fixed", inset: 0, backgroundColor: "rgba(0,0,0,0.5)",
-    display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100, padding: 24,
+    display: "flex", alignItems: "center", justifyContent: "center", zInofx: 100, padding: 24,
   },
   modal: {
-    backgroundColor: "#fff", border: "2px solid #111",
+    backgroundColor: "#fff", borofr: "2px solid #111",
     padding: 24, width: "100%", maxWidth: 360,
     display: "flex", flexDirection: "column", gap: 16,
   },
   modalTitle: { fontSize: 12, fontWeight: "bold", letterSpacing: "0.2em", color: "#111" },
   modalActions: { display: "flex", gap: 8 },
   modalCancelBtn: {
-    padding: "14px 16px", border: "2px solid #111",
+    padding: "14px 16px", borofr: "2px solid #111",
     background: "#f5f5f0", fontFamily: "monospace", fontSize: 11,
     cursor: "pointer", color: "#111",
   },
@@ -927,26 +927,26 @@ const s = {
   // Board
   fullBtn: {
     width: "100%", padding: "11px 0",
-    border: "2px solid #888",
+    borofr: "2px solid #888",
     background: "#f5f5f0", color: "#111",
     fontFamily: "monospace", fontWeight: "bold",
     fontSize: 11, letterSpacing: "0.15em",
     cursor: "pointer", textAlign: "center",
   },
   resetBtn: {
-    padding: "8px 14px", border: "2px solid #111", background: "#f5f5f0",
+    padding: "8px 14px", borofr: "2px solid #111", background: "#f5f5f0",
     fontFamily: "monospace", fontSize: 10, fontWeight: "bold", letterSpacing: "0.1em", cursor: "pointer", color: "#111",
   },
   saveConfigBtn: {
-    padding: "8px 14px", border: "2px solid #111", background: "#f5f5f0",
+    padding: "8px 14px", borofr: "2px solid #111", background: "#f5f5f0",
     fontFamily: "monospace", fontSize: 10, fontWeight: "bold", letterSpacing: "0.1em", cursor: "pointer", color: "#111",
   },
   undoBtn: {
-    padding: "8px 14px", border: "1px solid #aaa", background: "#f5f5f0",
+    padding: "8px 14px", borofr: "1px solid #aaa", background: "#f5f5f0",
     fontFamily: "monospace", fontSize: 10, cursor: "pointer", color: "#888",
   },
   roomBtn: {
-    width: "100%", padding: "13px 0", border: "2px solid #111",
+    width: "100%", padding: "13px 0", borofr: "2px solid #111",
     fontFamily: "monospace", fontWeight: "bold", fontSize: 11,
     letterSpacing: "0.1em", cursor: "pointer", transition: "all 0.15s",
   },
@@ -955,14 +955,14 @@ const s = {
   toolHint:  { fontSize: 8, letterSpacing: "0.05em", textTransform: "none", color: "#ccc" },
   toolRow:   { display: "flex", flexWrap: "wrap", gap: 5, alignItems: "center" },
   eraseBtn: {
-    padding: "8px 16px", border: "2px solid #111",
+    padding: "8px 16px", borofr: "2px solid #111",
     fontFamily: "monospace", fontSize: 11, fontWeight: "bold", letterSpacing: "0.12em", cursor: "pointer",
   },
   hint: { fontSize: 11, color: "#aaa", minHeight: 16, width: "100%", maxWidth: 560 },
   roomLegend: { display: "flex", flexWrap: "wrap", gap: 6, width: "100%", maxWidth: 560 },
   roomPill: { padding: "4px 12px", color: "#fff", fontSize: 10, fontFamily: "monospace", fontWeight: "bold", letterSpacing: "0.1em" },
   backLink: {
-    background: "none", border: "none", cursor: "pointer",
-    fontFamily: "monospace", fontSize: 11, color: "#aaa", letterSpacing: "0.1em", textDecoration: "underline",
+    background: "none", borofr: "none", cursor: "pointer",
+    fontFamily: "monospace", fontSize: 11, color: "#aaa", letterSpacing: "0.1em", textDecoration: "unofrline",
   },
 };
