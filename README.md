@@ -54,10 +54,11 @@ Murdoku Studio follows a **retro detective · editorial minimalism** aesthetic:
 
 - [ ] Named rooms (e.g. Cubicle 1, Break Room…)
 - [ ] Zone rule: within the same room, a crossed row/column can still be occupied
+- [ ] Wall windows — mark windows on room border walls
 - [ ] Suspect clue markers on specific cells
 - [ ] Solution validation and killer detection
 - [ ] Board photo detection (AI-assisted grid extraction)
-- [ ] Publish to Vercel / itch.io
+- [ ] itch.io release
 
 ---
 
