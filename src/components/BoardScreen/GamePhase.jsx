@@ -1,5 +1,5 @@
-import { ToolBtn } from "../shared/ToolBtn";
-import { base } from "../../styles/index.js";
+import { ToolBtn } from "../shared/ToolBtn.jsx";
+import { base, COLOR, BORDER, FONT } from "../../styles/index.js";
 
 export function GamePhase({ suspects, active, onSetActive, placedIds, victimPlaced, btnSz }) {
   return (
@@ -10,31 +10,31 @@ export function GamePhase({ suspects, active, onSetActive, placedIds, victimPlac
         <button
           style={{
             flex: 1, height: btnSz,
-            border: "2px solid #c0392b",
-            background: active === "__discard__" ? "#c0392b" : "#fdecea",
-            color:      active === "__discard__" ? "#fff"    : "#c0392b",
-            fontFamily: "monospace", fontWeight: "bold",
+            border: `2px solid ${COLOR.bloodRed}`,
+            background: active === "__discard__" ? COLOR.bloodRed : "#FBF0EF",
+            color:      active === "__discard__" ? "#FFFFFF"      : COLOR.bloodRed,
+            fontFamily: FONT.mono,
+            fontWeight: "bold",
             fontSize: Math.max(10, Math.floor(btnSz * 0.28)),
             cursor: "pointer",
             display: "flex", alignItems: "center", justifyContent: "center", gap: 5,
-            letterSpacing: "0.08em",
+            letterSpacing: "0.1em",
           }}
           onClick={() => onSetActive("__discard__")}
         >
           X <span style={{ fontSize: Math.max(8, Math.floor(btnSz * 0.2)), opacity: 0.8 }}>DISCARD</span>
         </button>
+
         <ToolBtn
           id="__victim__"
           active={active}
           disabled={victimPlaced && active !== "__victim__"}
           size={btnSz}
-          bg="#2d6a2d"
-          border="#2d6a2d"
-          color="#fff"
+          bg={COLOR.evidenceGreen}
+          border={COLOR.evidenceGreen}
+          color="#FFFFFF"
           onClick={onSetActive}
-        >
-          V
-        </ToolBtn>
+        >V</ToolBtn>
       </div>
 
       {/* Suspects */}
@@ -45,15 +45,11 @@ export function GamePhase({ suspects, active, onSetActive, placedIds, victimPlac
         <div style={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
           {suspects.map((id) => (
             <ToolBtn
-              key={id}
-              id={id}
-              active={active}
+              key={id} id={id} active={active}
               disabled={placedIds.has(id) && active !== id}
               size={btnSz}
               onClick={onSetActive}
-            >
-              {id}
-            </ToolBtn>
+            >{id}</ToolBtn>
           ))}
         </div>
       </div>
@@ -62,13 +58,13 @@ export function GamePhase({ suspects, active, onSetActive, placedIds, victimPlac
       <button
         style={{
           ...base.fullBtn,
-          background: active === "__erase__" ? "#111" : "#f5f5f0",
-          color:      active === "__erase__" ? "#f5f5f0" : "#111",
-          border: "2px solid #111",
+          background: active === "__erase__" ? COLOR.inkBlack : COLOR.paperWhite,
+          color:      active === "__erase__" ? COLOR.paperWhite : COLOR.inkBlack,
+          border: BORDER.mid,
         }}
         onClick={() => onSetActive("__erase__")}
       >
-        x ERASE <span style={{ fontSize: 9, opacity: 0.6 }}>(long press)</span>
+        × ERASE <span style={{ fontSize: 9, opacity: 0.5, marginLeft: 4 }}>(long press)</span>
       </button>
 
     </div>
