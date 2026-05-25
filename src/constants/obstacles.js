@@ -1,3 +1,5 @@
+import { COLOR } from "../styles/tokens.js";
+
 export const BLOCKERS = [
   { id: "table",  emoji: "🟫", label: "Table" },
   { id: "tv",     emoji: "📺", label: "TV"    },
@@ -5,10 +7,10 @@ export const BLOCKERS = [
 ];
 
 export const OCCUPABLES = [
-  { id: "rug",    emoji: "🟥", label: "Rug",   color: "#e8a0a0", text: "#7a2020" },
-  { id: "sofa",   emoji: "🛋️", label: "Sofa",  color: "#f0d080", text: "#7a5a00" },
-  { id: "water",  emoji: "💧", label: "Water", color: "#a0c8f0", text: "#1a4a7a" },
-  { id: "bed",    emoji: "🛏️", label: "Bed",   color: "#c8a8e0", text: "#4a1a7a" },
+  { id: "rug",   emoji: "🟥", label: "Rug",   color: COLOR.rug,   text: "#6B2020" },
+  { id: "sofa",  emoji: "🛋️", label: "Sofa",  color: COLOR.sofa,  text: "#4A2A6A" },
+  { id: "water", emoji: "💧", label: "Water", color: COLOR.water, text: "#1A3A5A" },
+  { id: "bed",   emoji: "🛏️", label: "Bed",   color: COLOR.bed,   text: "#5A4A2A" },
 ];
 
 export const ALL_OBSTACLES = [...BLOCKERS, ...OCCUPABLES];
