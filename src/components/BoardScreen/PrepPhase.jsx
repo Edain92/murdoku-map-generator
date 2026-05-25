@@ -1,7 +1,7 @@
-import { BLOCKERS, OCCUPABLES, ALL_OBSTACLES } from "../../constants/obstacles";
-import { ROOM_COLORS } from "../../constants/rooms";
-import { ObjBtn } from "../shared/ObjBtn";
-import { base } from "../../styles/index.js";
+import { ALL_OBSTACLES } from "../../constants/obstacles.js";
+import { ROOM_COLORS }   from "../../constants/rooms.js";
+import { ObjBtn }        from "../shared/ObjBtn.jsx";
+import { base, COLOR, BORDER } from "../../styles/index.js";
 
 export function PrepPhase({
   collapsed, onToggle,
@@ -9,8 +9,7 @@ export function PrepPhase({
   onToggleRoomMode, onUndoRoom,
   active, onSetActive,
   btnSz, emojiSz,
-  onSave, onReset,
-  onDone,
+  onSave, onReset, onDone,
 }) {
   return (
     <div style={{ width: "100%", maxWidth: 560 }}>
@@ -18,34 +17,34 @@ export function PrepPhase({
       {/* Collapsible header */}
       <button
         style={{
-          width: "100%", padding: "10px 14px",
-          border: "2px solid #111",
-          background: collapsed ? "#f5f5f0" : "#111",
-          color:      collapsed ? "#111"     : "#f5f5f0",
-          fontFamily: "monospace", fontWeight: "bold",
-          fontSize: 11, letterSpacing: "0.18em",
+          width: "100%", padding: "10px 16px",
+          border: BORDER.mid,
+          background: collapsed ? COLOR.paperWhite : COLOR.inkBlack,
+          color:      collapsed ? COLOR.inkBlack    : COLOR.paperWhite,
+          fontFamily: "'Courier New', monospace",
+          fontWeight: "bold",
+          fontSize: 10, letterSpacing: "0.22em",
           cursor: "pointer",
           display: "flex", justifyContent: "space-between", alignItems: "center",
         }}
         onClick={onToggle}
       >
         <span>MAP SETUP</span>
-        <span style={{ fontSize: 14 }}>{collapsed ? "▾" : "▴"}</span>
+        <span style={{ fontSize: 13 }}>{collapsed ? "▾" : "▴"}</span>
       </button>
 
-      {/* Expandable content */}
       {!collapsed && (
-        <div style={{ border: "2px solid #111", borderTop: "none", padding: 10, display: "flex", flexDirection: "column", gap: 8 }}>
+        <div style={{ border: BORDER.mid, borderTop: "none", padding: 10, display: "flex", flexDirection: "column", gap: 8, background: "#FAFAF8" }}>
 
-          {/* Add room button */}
+          {/* Add room */}
           <button
             style={{
               ...base.fullBtn,
-              background: roomMode ? ROOM_COLORS[rooms.length % ROOM_COLORS.length] : "#f5f5f0",
-              color:      roomMode ? "#fff" : "#111",
+              background: roomMode ? ROOM_COLORS[rooms.length % ROOM_COLORS.length] : COLOR.paperWhite,
+              color:      roomMode ? "#FFFFFF" : COLOR.inkBlack,
               border:     roomMode
                 ? `2px solid ${ROOM_COLORS[rooms.length % ROOM_COLORS.length]}`
-                : "2px solid #888",
+                : `2px solid ${COLOR.detectiveGray}`,
             }}
             onClick={onToggleRoomMode}
             disabled={roomsLeft <= 0}
@@ -53,14 +52,14 @@ export function PrepPhase({
             {roomMode
               ? `Drawing room ${rooms.length + 1} of ${numRooms} — drag the cells`
               : roomsLeft > 0
-                ? `+ ADD ROOM (${roomsLeft} remaining)`
+                ? `+ ADD ROOM  (${roomsLeft} remaining)`
                 : "✓ All rooms defined"
             }
           </button>
 
           {rooms.length > 0 && (
             <button
-              style={{ ...base.fullBtn, border: "2px solid #ccc", color: "#888", fontSize: 10 }}
+              style={{ ...base.fullBtn, border: `2px solid ${COLOR.detectiveGray}`, color: COLOR.detectiveGray, fontSize: 10 }}
               onClick={onUndoRoom}
             >
               ↩ Undo last room
@@ -74,14 +73,7 @@ export function PrepPhase({
             </div>
             <div style={{ display: "flex", gap: 2, width: "100%" }}>
               {ALL_OBSTACLES.map((o) => (
-                <ObjBtn
-                  key={o.id}
-                  obstacle={o}
-                  active={active}
-                  size={btnSz}
-                  emojiSize={emojiSz}
-                  onClick={onSetActive}
-                />
+                <ObjBtn key={o.id} obstacle={o} active={active} size={btnSz} emojiSize={emojiSz} onClick={onSetActive} />
               ))}
             </div>
           </div>
@@ -92,16 +84,15 @@ export function PrepPhase({
               SAVE CONFIG
             </button>
             <button
-              style={{ height: btnSz, padding: "0 16px", border: "2px solid #111", background: "#f5f5f0", fontFamily: "monospace", fontSize: 10, fontWeight: "bold", cursor: "pointer", color: "#111", whiteSpace: "nowrap" }}
+              style={{ height: btnSz, padding: "0 16px", border: BORDER.mid, background: COLOR.paperWhite, fontFamily: "'Courier New', monospace", fontSize: 10, fontWeight: "bold", cursor: "pointer", color: COLOR.inkBlack, whiteSpace: "nowrap" }}
               onClick={onReset}
             >
               RESET
             </button>
           </div>
 
-          {/* Done button */}
           <button
-            style={{ ...base.fullBtn, background: "#111", color: "#f5f5f0", border: "2px solid #111" }}
+            style={{ ...base.fullBtn, background: COLOR.inkBlack, color: COLOR.paperWhite, border: BORDER.mid }}
             onClick={onDone}
           >
             DONE — START PLAYING ▸
