@@ -1,15 +1,16 @@
 import { useState } from "react";
-import { Stepper } from "./Stepper";
-import { SavedConfigs } from "./SavedConfigs";
-import { parseRange } from "../../utils/suspects";
-import { base } from "../../styles/index.js";
+import { Stepper } from "./Stepper.jsx";
+import { SavedConfigs } from "./SavedConfigs.jsx";
+import { Logo } from "../shared/Logo.jsx";
+import { parseRange } from "../../utils/suspects.js";
+import { base, COLOR } from "../../styles/index.js";
 
 export function SetupScreen({ onPlay, configs, onDeleteConfig }) {
-  const [range,  setRange]  = useState("a-h");
-  const [rows,   setRows]   = useState(9);
-  const [cols,   setCols]   = useState(9);
-  const [rooms,  setRooms]  = useState(6);
-  const [error,  setError]  = useState("");
+  const [range, setRange] = useState("a-h");
+  const [rows,  setRows]  = useState(9);
+  const [cols,  setCols]  = useState(9);
+  const [rooms, setRooms] = useState(6);
+  const [error, setError] = useState("");
 
   const suspects = parseRange(range);
 
@@ -20,31 +21,22 @@ export function SetupScreen({ onPlay, configs, onDeleteConfig }) {
   };
 
   const handleLoad = (cfg) => {
-    setRange(cfg.range);
-    setRows(cfg.rows);
-    setCols(cfg.cols);
-    setRooms(cfg.rooms);
+    setRange(cfg.range); setRows(cfg.rows);
+    setCols(cfg.cols);   setRooms(cfg.rooms);
     setError("");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handlePlayDirect = (cfg, susp) => {
-    onPlay({
-      rows:       cfg.rows,
-      cols:       cfg.cols,
-      suspects:   susp,
-      numRooms:   cfg.rooms,
-      range:      cfg.range,
-      roomLayout: cfg.roomLayout,
-      cellState:  cfg.cellState,
-    });
+    onPlay({ rows: cfg.rows, cols: cfg.cols, suspects: susp,
+             numRooms: cfg.rooms, range: cfg.range,
+             roomLayout: cfg.roomLayout, cellState: cfg.cellState });
   };
 
   return (
     <div style={base.screen}>
       <header style={base.header}>
-        <div style={base.logo}>MURDOKU</div>
-        <div style={base.subtitle}>GAME SETUP</div>
+        <Logo subtitle="Game Setup" />
       </header>
 
       <div style={base.card}>
@@ -61,7 +53,7 @@ export function SetupScreen({ onPlay, configs, onDeleteConfig }) {
           {suspects && (
             <div style={base.preview}>
               {suspects.map((id) => <span key={id} style={base.chip}>{id}</span>)}
-              <span style={{ ...base.chip, background: "#2d6a2d" }}>V</span>
+              <span style={{ ...base.chip, background: COLOR.evidenceGreen }}>V</span>
             </div>
           )}
           {!suspects && range && <div style={base.errorBox}>Invalid format. Use e.g. a-h</div>}
@@ -75,7 +67,7 @@ export function SetupScreen({ onPlay, configs, onDeleteConfig }) {
           <Stepper label="Rooms" value={rooms} onChange={setRooms} min={1} />
         </div>
         <div style={base.note}>
-          Grid {rows}x{cols} · {rooms} rooms · {suspects?.length ?? "?"} suspects
+          Grid {rows}×{cols} · {rooms} rooms · {suspects?.length ?? "?"} suspects
         </div>
 
         {error && <div style={base.errorBox}>{error}</div>}
