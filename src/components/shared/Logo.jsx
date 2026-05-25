@@ -15,8 +15,8 @@ export function Logo({ subtitle }) {
     <div style={{ textAlign: "center", userSelect: "none" }}>
       <svg
         viewBox="0 0 320 64"
-        width="320"
-        height="64"
+        width="360"
+        height="72"
         xmlns="http://www.w3.org/2000/svg"
         aria-label="Murdoku Studio"
         style={{ display: "block", margin: "0 auto" }}
@@ -89,12 +89,12 @@ export function Logo({ subtitle }) {
       {/* STUDIO wordmark below */}
       <div style={{
         fontFamily: MONO,
-        fontSize: 10,
-        letterSpacing: "0.55em",
+        fontSize: 12,
+        letterSpacing: "0.6em",
         color: COLOR.detectiveGray,
-        marginTop: 4,
+        marginTop: 6,
         textTransform: "uppercase",
-        paddingLeft: "0.55em", // optical center for letter-spacing
+        paddingLeft: "0.6em",
       }}>
         STUDIO
       </div>
