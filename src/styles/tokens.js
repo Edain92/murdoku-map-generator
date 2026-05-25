@@ -3,7 +3,7 @@
 export const COLOR = {
   paperWhite:    "#F2F1EE",
   inkBlack:      "#111111",
-  detectiveGray: "#9A9A96",
+  detectiveGray: "#5A5A57",
   bloodRed:      "#C6453D",
   evidenceGreen: "#4B7A43",
 
