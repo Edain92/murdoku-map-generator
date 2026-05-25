@@ -115,7 +115,7 @@ export function BoardScreen({
         </div>
       )}
 
-      <button style={base.backLink} onClick={onBack}>← New game</button>
+      <button style={{ ...base.backLink, fontSize: 14, letterSpacing: "0.08em", marginTop: 8 }} onClick={onBack}>← New game</button>
 
       {showSave && <SaveModal onSave={handleSave} onCancel={() => setShowSave(false)} />}
     </div>
