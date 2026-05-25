@@ -144,7 +144,7 @@ export const base = {
     fontSize: 8,
     letterSpacing: "0.05em",
     textTransform: "none",
-    color: "#C8C7C4",
+    color: "#888885",
   },
   toolRow: { display: "flex", flexWrap: "wrap", gap: 2, alignItems: "center" },
   backLink: {
