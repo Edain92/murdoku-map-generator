@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { base } from "../styles/index.js";
+import { base, COLOR, FONT } from "../styles/index.js";
 
 export function SaveModal({ onSave, onCancel }) {
   const [name, setName] = useState("");
-
   return (
     <div style={base.modalOverlay}>
       <div style={base.modal}>
-        <div style={{ fontSize: 12, fontWeight: "bold", letterSpacing: "0.2em", color: "#111" }}>
+        <div style={{ fontSize: 11, fontWeight: "bold", letterSpacing: "0.22em", color: COLOR.inkBlack, fontFamily: FONT.mono }}>
           SAVE CONFIGURATION
         </div>
         <input
@@ -20,18 +19,14 @@ export function SaveModal({ onSave, onCancel }) {
         />
         <div style={{ display: "flex", gap: 8 }}>
           <button
-            style={{ padding: "14px 16px", border: "2px solid #111", background: "#f5f5f0", fontFamily: "monospace", fontSize: 11, cursor: "pointer", color: "#111" }}
+            style={{ padding: "13px 16px", border: `2px solid ${COLOR.inkBlack}`, background: COLOR.paperWhite, fontFamily: FONT.mono, fontSize: 11, cursor: "pointer", color: COLOR.inkBlack }}
             onClick={onCancel}
-          >
-            Cancel
-          </button>
+          >Cancel</button>
           <button
             style={{ ...base.mainBtn, flex: 1 }}
             onClick={() => { if (name.trim()) onSave(name.trim()); }}
             disabled={!name.trim()}
-          >
-            SAVE
-          </button>
+          >SAVE</button>
         </div>
       </div>
     </div>
