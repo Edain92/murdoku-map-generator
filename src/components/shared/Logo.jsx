@@ -14,7 +14,7 @@ export function Logo({ subtitle }) {
   return (
     <div style={{ textAlign: "center", userSelect: "none" }}>
       <svg
-        viewBox="0 0 320 64"
+        viewBox="0 0 340 64"
         width="360"
         height="72"
         xmlns="http://www.w3.org/2000/svg"
@@ -35,14 +35,14 @@ export function Logo({ subtitle }) {
 
         {/* ── O as magnifier lens ── */}
         {/* Outer lens ring */}
-        <circle cx="163" cy="30" r="22" fill="#FFFFFF" stroke={INK} strokeWidth="4" />
+        <circle cx="178" cy="30" r="22" fill="#FFFFFF" stroke={INK} strokeWidth="4" />
 
         {/* Inner mini grid (3×3) — the deduction grid inside the lens */}
         {[0,1,2].map(row =>
           [0,1,2].map(col => (
             <rect
               key={`${row}-${col}`}
-              x={152 + col * 7.5}
+              x={167 + col * 7.5}
               y={19  + row * 7.5}
               width="7" height="7"
               fill="none"
@@ -55,7 +55,7 @@ export function Logo({ subtitle }) {
 
         {/* Red X in center cell of grid */}
         <text
-          x="163" y="35"
+          x="178" y="35"
           textAnchor="middle"
           fontFamily={MONO}
           fontWeight="bold"
@@ -66,8 +66,8 @@ export function Logo({ subtitle }) {
 
         {/* Magnifier handle */}
         <line
-          x1="180" y1="46"
-          x2="192" y2="58"
+          x1="195" y1="46"
+          x2="207" y2="58"
           stroke={INK}
           strokeWidth="4"
           strokeLinecap="round"
@@ -75,7 +75,7 @@ export function Logo({ subtitle }) {
 
         {/* ── KU ── */}
         <text
-          x="200" y="52"
+          x="215" y="52"
           fontFamily={SERIF}
           fontWeight="900"
           fontSize="52"
